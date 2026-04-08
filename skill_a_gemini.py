@@ -1,39 +1,78 @@
 """
-SKILL A — Gemini 文案引擎 v2
+SKILL A — Gemini 文案引擎 v3
+強化 prompt：角色設定更精準、輸出格式更嚴格、文案維度更完整
 """
 import json, re, urllib.request
 
 def generate_copies(event: dict, api_key: str) -> dict:
-    prompt = f"""你是一位專業的 B2B 行銷文案專家，擅長為企業活動撰寫高轉換率廣告文案。
 
-根據以下活動資訊，生成 15 組 Facebook 廣告文案：
+    event_name  = event.get('event_name', '')
+    topic       = event.get('topic', '')
+    date        = event.get('date', '')
+    time_       = event.get('time', '')
+    venue       = event.get('venue', '')
+    org         = event.get('org', 'beBit TECH')
+    description = event.get('description', '')
+    audience    = event.get('audience', '行銷主管、電商品牌負責人')
 
-活動名稱：{event.get('event_name', '')}
-主題：{event.get('topic', '')}
-日期：{event.get('date', '')} {event.get('time', '')}
-地點：{event.get('venue', '')}
-主辦：{event.get('org', '')}
-活動描述：{event.get('description', '')}
-目標受眾：{event.get('audience', '企業主管、行銷總監')}
+    prompt = f"""你是 {org} 的資深社群行銷顧問，專門為 B2B 科技與顧問公司撰寫 Facebook 廣告文案。你深刻理解台灣企業決策者的痛點、語言習慣與行動動機。
 
-每組包含：h（標題15字內）、s（副標30字內）、cta（4-6字）
-涵蓋痛點型、利益型、好奇型、緊迫型等不同訴求，全部繁體中文
-只輸出 JSON，不要任何說明：
+## 活動背景
+
+- 活動名稱：{event_name}
+- 核心主題：{topic}
+- 主辦單位：{org}
+- 時間地點：{date} {time_}，{venue}
+- 活動內容：{description}
+- 目標受眾：{audience}
+
+## 任務
+
+根據上述活動，生成 15 組高轉換率的 Facebook 廣告文案。
+
+每組文案須包含三個欄位：
+- h：圖片主標題，15 字以內，要能單獨吸引目光，不依賴上下文
+- s：貼文說明，30 字以內，補充說明主標題，具體描述活動價值或行動誘因
+- cta：行動按鈕文字，4–6 字，明確、有力
+
+## 15 組必須涵蓋以下維度（每個維度至少 2 組）：
+
+1. 痛點型：點出目標受眾面對的問題或焦慮
+2. 利益型：直接說明參加後能獲得什麼具體收益
+3. 好奇型：製造懸念或資訊落差，讓人想點擊了解
+4. 緊迫型：強調名額限制、時間壓力或稀缺性
+5. 權威信任型：強調講者資歷、主辦單位專業度或已有誰參加
+
+## 文案風格要求
+
+- 語氣專業但不說教，貼近台灣 B2B 行銷人員的說話方式
+- 避免空泛、口號式的句子（如「掌握未來趨勢」「引領行業革命」）
+- 標題要具體、有畫面感，能讓人立刻理解活動是關於什麼
+- 副標題要提供新資訊，不重複標題內容
+- 文案必須與活動主題高度相關，不得使用與 {topic} 無關的詞彙
+
+## 輸出格式
+
+只輸出 JSON，不要任何說明、標題或 markdown。格式如下：
 {{"A01":{{"h":"","s":"","cta":""}},"A02":{{"h":"","s":"","cta":""}},"A03":{{"h":"","s":"","cta":""}},"A04":{{"h":"","s":"","cta":""}},"A05":{{"h":"","s":"","cta":""}},"A06":{{"h":"","s":"","cta":""}},"A07":{{"h":"","s":"","cta":""}},"A08":{{"h":"","s":"","cta":""}},"A09":{{"h":"","s":"","cta":""}},"A10":{{"h":"","s":"","cta":""}},"A11":{{"h":"","s":"","cta":""}},"A12":{{"h":"","s":"","cta":""}},"A13":{{"h":"","s":"","cta":""}},"A14":{{"h":"","s":"","cta":""}},"A15":{{"h":"","s":"","cta":""}}}}"""
 
     payload = json.dumps({
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
-            "temperature": 0.7,
+            "temperature": 0.85,
             "maxOutputTokens": 4000,
             "responseMimeType": "application/json",
         }
     }).encode('utf-8')
 
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
-    req = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"}, method="POST")
+    req = urllib.request.Request(
+        url, data=payload,
+        headers={"Content-Type": "application/json"},
+        method="POST"
+    )
 
-    with urllib.request.urlopen(req, timeout=40) as resp:
+    with urllib.request.urlopen(req, timeout=45) as resp:
         result = json.loads(resp.read().decode('utf-8'))
 
     raw = result['candidates'][0]['content']['parts'][0]['text'].strip()
@@ -47,14 +86,17 @@ def generate_copies(event: dict, api_key: str) -> dict:
 
     validated = {}
     for i, (k, v) in enumerate(copies.items(), 1):
-        if i > 15: break
+        if i > 15:
+            break
         validated[f'A{i:02d}'] = {
-            'h': str(v.get('h', '精彩活動即將開始')),
-            's': str(v.get('s', '期待您的參與')),
+            'h':   str(v.get('h', '精彩活動即將開始')),
+            's':   str(v.get('s', '期待您的參與')),
             'cta': str(v.get('cta', '立即報名')),
         }
+
     if not validated:
         raise ValueError("Gemini 回傳空文案")
+
     return validated
 
 
@@ -76,3 +118,7 @@ def get_copies_fallback() -> dict:
         'A14': {'h': '90 分鐘讓你的思維升級', 's': '精華濃縮，沒有廢話，全是你需要的', 'cta': '立刻報名'},
         'A15': {'h': '業界最值得關注的一場交流', 's': '把握難得機會，與最前線的人對話', 'cta': '確認出席'},
     }
+
+
+if __name__ == '__main__':
+    print('✅ Skill A Gemini v3 載入完成')
