@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>beBit TECH · Ad Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFFFFF;--sf:#F9FAFB;--sf2:#F3F4F6;--bd:#E5E7EB;--bd2:#D1D5DB;--navy:#003366;--blue:#0055CC;--blt:#EBF2FF;--text:#111827;--sub:#6B7280;--muted:#9CA3AF;--ok:#065F46;--warn:#92400E;--r:8px;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Inter','Noto Sans TC',sans-serif;min-height:100vh;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+nav{border-bottom:1px solid var(--bd);background:#fff;position:sticky;top:0;z-index:100;}
+.ni{max-width:1080px;margin:0 auto;padding:0 40px;height:58px;display:flex;align-items:center;justify-content:space-between;}
+.brand{display:flex;align-items:center;gap:14px;}
+.bl{height:30px;width:auto;object-fit:contain;}
+.bfb{display:none;font-size:16px;font-weight:700;color:var(--navy);}
+.bs{width:1px;height:20px;background:var(--bd);}
+.bn{font-size:12px;font-weight:500;color:var(--muted);letter-spacing:.04em;}
+.nt{font-size:11px;font-weight:600;color:var(--sub);border:1px solid var(--bd);padding:4px 12px;border-radius:20px;}
+.page{max-width:1080px;margin:0 auto;padding:36px 40px 80px;}
+.pt{font-size:24px;font-weight:700;color:var(--text);letter-spacing:-.02em;margin-bottom:3px;}
+.ps{font-size:13px;color:var(--sub);margin-bottom:36px;}
+.sec{margin-bottom:28px;}
+.sh{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.sh::after{content:'';flex:1;height:1px;background:var(--bd);}
+.sn{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.04em;}
+.st{font-size:11px;font-weight:600;color:var(--text);letter-spacing:.06em;text-transform:uppercase;}
+.card{background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:22px 26px;}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.field{display:flex;flex-direction:column;gap:5px;}
+.s2{grid-column:span 2;}
+label{font-size:11px;font-weight:600;color:var(--sub);letter-spacing:.06em;text-transform:uppercase;}
+input[type=text],textarea{background:var(--sf);border:1px solid var(--bd);border-radius:6px;color:var(--text);font-family:inherit;font-size:14px;padding:9px 12px;width:100%;outline:none;transition:border-color .15s,box-shadow .15s;resize:none;}
+input:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,85,204,.08);background:#fff;}
+input::placeholder,textarea::placeholder{color:var(--muted);}
+/* API Key */
+.api-row{display:flex;align-items:center;gap:10px;}
+.api-input{flex:1;font-family:'SF Mono','Courier New',monospace;font-size:13px;letter-spacing:.02em;}
+.api-status{flex-shrink:0;font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px;border:1px solid var(--bd);color:var(--muted);}
+.api-status.ok{background:rgba(6,95,70,.08);border-color:rgba(6,95,70,.2);color:var(--ok);}
+.api-hint{font-size:12px;color:var(--muted);margin-top:6px;}
+.api-hint a{color:var(--blue);text-decoration:none;}
+/* Speakers */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.sc{border:1px solid var(--bd);border-radius:var(--r);padding:16px 12px 14px;cursor:pointer;transition:border-color .15s,background .15s,box-shadow .15s;position:relative;text-align:center;user-select:none;background:#fff;}
+.sc:hover{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,85,204,.06);}
+.sc.sel{border-color:var(--blue);background:var(--blt);box-shadow:0 0 0 3px rgba(0,85,204,.08);}
+.sc.sel::after{content:'✓';position:absolute;top:7px;right:9px;width:17px;height:17px;border-radius:50%;background:var(--blue);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.sav{width:60px;height:60px;border-radius:50%;object-fit:cover;object-position:top center;border:2px solid var(--bd);margin:0 auto 9px;display:block;background:var(--sf);}
+.sc.sel .sav{border-color:var(--blue);}
+.savp{width:60px;height:60px;border-radius:50%;background:var(--sf2);border:2px solid var(--bd);margin:0 auto 9px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--muted);}
+.sname{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.stit{font-size:11px;color:var(--sub);line-height:1.4;}
+.skey{display:inline-block;margin-top:5px;background:var(--sf2);border:1px solid var(--bd);color:var(--muted);font-size:9px;font-weight:600;padding:1px 6px;border-radius:10px;}
+.sc.sel .skey{background:rgba(0,85,204,.08);border-color:rgba(0,85,204,.2);color:var(--blue);}
+.mb{margin-top:14px;padding:10px 14px;background:var(--sf);border:1px solid var(--bd);border-radius:6px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.chips{display:flex;gap:6px;flex-wrap:wrap;}
+.chip{background:#fff;border:1px solid var(--bd);color:var(--sub);font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;}
+.chip.on{background:var(--blt);border-color:rgba(0,85,204,.25);color:var(--blue);}
+.mp{font-size:11px;font-weight:600;color:var(--muted);}
+.mp.on{color:var(--blue);}
+/* Qty */
+.qr{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.qi strong{font-size:14px;font-weight:600;color:var(--text);}
+.qi p{font-size:12px;color:var(--muted);margin-top:2px;}
+.qc{display:flex;align-items:center;border:1px solid var(--bd);border-radius:6px;overflow:hidden;}
+.qb{width:34px;height:34px;background:var(--sf);border:none;color:var(--sub);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.qb:hover{background:var(--sf2);color:var(--text);}
+.qv{width:48px;text-align:center;font-size:17px;font-weight:700;color:var(--text);border-left:1px solid var(--bd);border-right:1px solid var(--bd);}
+.qs{margin-top:12px;padding-top:12px;border-top:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;}
+.qs-d{font-size:12px;color:var(--sub);}
+.qs-t{font-size:12px;font-weight:600;color:var(--text);}
+.qs-t span{font-size:19px;font-weight:700;color:var(--blue);}
+/* Generate */
+.gs{padding:28px 0 0;display:flex;flex-direction:column;align-items:center;gap:16px;}
+.bg{background:var(--navy);color:#fff;font-family:inherit;font-size:14px;font-weight:600;padding:13px 60px;border-radius:50px;border:none;cursor:pointer;letter-spacing:.04em;transition:background .15s,transform .1s,box-shadow .15s;}
+.bg:hover{background:#001F3F;transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,51,102,.2);}
+.bg:disabled{opacity:.45;cursor:not-allowed;transform:none;}
+.sbox{display:none;width:100%;max-width:480px;background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:22px 26px;text-align:center;}
+.sbox.show{display:block;}
+.si{font-size:26px;display:inline-block;margin-bottom:8px;}
+.spin{animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.st2{font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.sd{font-size:13px;color:var(--sub);line-height:1.5;}
+.sw{font-size:12px;color:#92400E;background:#FEF3C7;padding:8px 12px;border-radius:6px;margin-top:10px;display:none;text-align:left;}
+.sw.show{display:block;}
+.pw{background:var(--sf2);border-radius:2px;height:2px;margin-top:12px;overflow:hidden;}
+.pb{height:100%;background:linear-gradient(90deg,var(--navy),var(--blue));width:0%;transition:width .4s ease;}
+.bdl{display:none;margin-top:12px;background:var(--ok);color:#fff;font-family:inherit;font-size:13px;font-weight:600;padding:10px 32px;border-radius:50px;border:none;cursor:pointer;letter-spacing:.04em;}
+.bdl.show{display:inline-block;}
+footer{border-top:1px solid var(--bd);padding:18px 40px;max-width:1080px;margin:0 auto;display:flex;justify-content:space-between;color:var(--muted);font-size:11px;}
+</style>
+</head>
+<body>
+<nav><div class="ni">
+  <div class="brand">
+    <img src="/static/img/logo.png" class="bl" onerror="this.style.display='none';document.getElementById('bf').style.display='block'">
+    <div class="bfb" id="bf">beBit TECH</div>
+    <div class="bs"></div>
+    <span class="bn">Ad Studio</span>
+  </div>
+  <div class="nt">v5 · Gemini</div>
+</div></nav>
+
+<div class="page">
+<div class="pt">廣告素材生成</div>
+<div class="ps">填入活動資訊 · 選擇講者 · 設定數量 · Gemini 生成文案 · 下載 HTML</div>
+
+<!-- 01 Gemini API Key -->
+<div class="sec">
+  <div class="sh"><span class="sn">01</span><span class="st">Gemini API Key</span></div>
+  <div class="card">
+    <div class="field">
+      <label>API Key</label>
+      <div class="api-row">
+        <input type="text" id="apikey" class="api-input" placeholder="AIza..." autocomplete="off">
+        <div class="api-status" id="api-st">未設定</div>
+      </div>
+      <div class="api-hint">免費取得：<a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a> → Get API Key → Create API Key<br>有設定 Key → AI 根據你的活動即時生成文案；沒有 Key → 使用通用備用文案</div>
+    </div>
+  </div>
+</div>
+
+<!-- 02 活動資訊 -->
+<div class="sec">
+  <div class="sh"><span class="sn">02</span><span class="st">活動資訊</span></div>
+  <div class="card">
+    <div class="fg">
+      <div class="field s2"><label>活動名稱</label><input type="text" id="event_name" value="台灣電商 AI 數據模擬應用座談會"></div>
+      <div class="field"><label>日期</label><input type="text" id="date" value="2025.04.20（四）"></div>
+      <div class="field"><label>時間</label><input type="text" id="time" value="14:00–15:20"></div>
+      <div class="field s2"><label>地點</label><input type="text" id="venue" value="台北 W 飯店 皇家宴會廳"></div>
+      <div class="field"><label>主題標語</label><input type="text" id="topic" value="AI × CDP × 電商"></div>
+      <div class="field"><label>主辦單位</label><input type="text" id="org" value="beBit TECH"></div>
+      <div class="field s2">
+        <label>活動描述（讓 AI 生成精準文案）</label>
+        <textarea id="desc" rows="3" placeholder="用 1–3 句話描述這次活動的主題、亮點和目標受眾。例如：探討 AI 數據模擬在 CDP 上的實戰應用，面向電商品牌行銷主管和技術決策者，由業界資深總監分享第一手洞察。"></textarea>
+      </div>
+      <div class="field s2">
+        <label>目標受眾</label>
+        <input type="text" id="audience" placeholder="例：電商品牌行銷主管、CDP 負責人、業務總監" value="電商品牌行銷主管、CDP 負責人、業務總監">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 講者 -->
+<div class="sec">
+  <div class="sh"><span class="sn">03</span><span class="st">選擇講者（1–4 位）</span></div>
+  <div class="card">
+    <div class="sg" id="sg"></div>
+    <div class="mb">
+      <div class="chips" id="chips"><span style="color:var(--muted);font-size:12px;">尚未選擇</span></div>
+      <div class="mp" id="mp">—</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 數量 -->
+<div class="sec">
+  <div class="sh"><span class="sn">04</span><span class="st">生成數量</span></div>
+  <div class="card">
+    <div class="qr">
+      <div class="qi"><strong id="ql">生成張數</strong><p id="qd">單人上限 50 張；多人同框上限 30 張</p></div>
+      <div class="qc">
+        <button class="qb" onclick="adj(-1)">−</button>
+        <div class="qv" id="qv">10</div>
+        <button class="qb" onclick="adj(1)">+</button>
+      </div>
+    </div>
+    <div class="qs">
+      <div class="qs-d" id="qsd">—</div>
+      <div class="qs-t">預計 <span id="tv">—</span> 張</div>
+    </div>
+  </div>
+</div>
+
+<div class="gs">
+  <button class="bg" id="bg" onclick="gen()">Generate Ads</button>
+  <div class="sbox" id="sb">
+    <div class="si" id="si">⚙</div>
+    <div class="st2" id="st2">準備中…</div>
+    <div class="sd" id="sd">初始化中</div>
+    <div class="sw" id="sw"></div>
+    <div class="pw"><div class="pb" id="pb"></div></div>
+    <button class="bdl" id="dl">Download ZIP</button>
+  </div>
+</div>
+</div>
+
+<footer>
+  <span>beBit TECH · Ad Studio · Skills A(Gemini) × B × C × D + Plugin</span>
+  <span>Powered by Claude AI</span>
+</footer>
+
+<script>
+let sel=[],n=10,SPK={},blob=null,dn='bebit_ads.zip';
+
+// API key 狀態
+document.getElementById('apikey').addEventListener('input',function(){
+  const v=this.value.trim(),el=document.getElementById('api-st');
+  if(v.startsWith('AIza')&&v.length>20){el.textContent='✓ 已設定';el.classList.add('ok');}
+  else{el.textContent='未設定';el.classList.remove('ok');}
+});
+
+async function load(){
+  try{const r=await fetch('/api/speakers');SPK=await r.json();}
+  catch{SPK={S1:{name:'Mars Chen',title:'業務總監',file:'speaker1.jpg'},S2:{name:'Miya Hsieh',title:'銷售總監',file:'speaker2.jpg'},S3:{name:'Ryan Lai',title:'資深業務總監',file:'speaker3.jpg'},S4:{name:'Olivia Hsiang',title:'業務副總監',file:'speaker4.jpg'}};}
+  const g=document.getElementById('sg');g.innerHTML='';
+  Object.entries(SPK).forEach(([k,s])=>{
+    const ini=s.name.split(' ').map(w=>w[0]).join('');
+    const el=document.createElement('div');el.className='sc';el.dataset.key=k;el.onclick=()=>tog(k);
+    el.innerHTML=`<img src="/static/img/${s.file}" class="sav" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="savp" style="display:none">${ini}</div><div class="sname">${s.name}</div><div class="stit">${s.title}</div><div class="skey">${k}</div>`;
+    g.appendChild(el);
+  });ui();
+}
+
+function tog(k){const i=sel.indexOf(k);i===-1?sel.push(k):sel.splice(i,1);document.querySelectorAll('.sc').forEach(c=>c.classList.toggle('sel',sel.includes(c.dataset.key)));ui();}
+
+function adj(d){const mx=sel.length<=1?50:30;n=Math.max(1,Math.min(mx,n+d));document.getElementById('qv').textContent=n;ui();}
+
+function ui(){
+  const cnt=sel.length,multi=cnt>1;
+  const ch=document.getElementById('chips');
+  ch.innerHTML=cnt===0?'<span style="color:var(--muted);font-size:12px;">尚未選擇</span>':sel.map(k=>`<div class="chip on">${SPK[k]?.name||k}</div>`).join('');
+  const mp=document.getElementById('mp');
+  if(cnt===0){mp.textContent='—';mp.classList.remove('on');}
+  else if(cnt===1){mp.textContent='單人模式';mp.classList.add('on');}
+  else{mp.textContent=`多人同框 · ${cnt} 位`;mp.classList.add('on');}
+  const mx=cnt<=1?50:30;if(n>mx){n=mx;document.getElementById('qv').textContent=n;}
+  const total=cnt===0?0:n;
+  document.getElementById('tv').textContent=cnt===0?'—':total;
+  let desc='—';
+  if(cnt===1)desc=`${SPK[sel[0]]?.name} · ${n} 張（不同版型 × 配色）`;
+  else if(cnt>1)desc=`${cnt} 位講者同框 · ${n} 張（不同版型 × 配色）`;
+  document.getElementById('qsd').textContent=desc;
+}
+
+function setStatus(icon,spin,title,desc,prog){
+  const si=document.getElementById('si'),st=document.getElementById('st2'),sd=document.getElementById('sd'),pb=document.getElementById('pb');
+  si.textContent=icon;spin?si.classList.add('spin'):si.classList.remove('spin');
+  st.textContent=title;sd.textContent=desc;pb.style.width=prog+'%';
+}
+
+async function gen(){
+  if(sel.length===0){alert('請至少選擇一位講者');return;}
+  const apikey=document.getElementById('apikey').value.trim();
+  const event={
+    event_name:document.getElementById('event_name').value,
+    date:document.getElementById('date').value,
+    time:document.getElementById('time').value,
+    venue:document.getElementById('venue').value,
+    topic:document.getElementById('topic').value,
+    org:document.getElementById('org').value,
+    description:document.getElementById('desc').value,
+    audience:document.getElementById('audience').value,
+    gemini_api_key:apikey,
+  };
+
+  const bg=document.getElementById('bg'),sb=document.getElementById('sb'),dl=document.getElementById('dl'),sw=document.getElementById('sw');
+  bg.disabled=true;sb.classList.add('show');dl.classList.remove('show');sw.classList.remove('show');
+
+  // Step 1: 生成文案
+  setStatus('⚙',true, apikey?'Gemini 生成文案中…':'準備文案中…', apikey?'AI 根據活動資訊生成專屬文案，約需 5–15 秒':'使用通用備用文案', 15);
+
+  let copies=null;
+  try{
+    const r1=await fetch('/api/generate_copy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(event)});
+    const d1=await r1.json();
+    if(d1.success){
+      copies=d1.copies;
+      if(d1.source==='fallback'&&d1.warning){sw.textContent='⚠ Gemini 連線失敗，改用通用備用文案。錯誤：'+d1.warning;sw.classList.add('show');}
+      if(d1.source==='gemini')setStatus('✓',false,'文案生成完成','Gemini 已生成 15 組專屬文案，開始產生廣告…',45);
+      else setStatus('⚙',true,'生成廣告版型…','套用版型、色系、裝飾層',45);
+    }
+  }catch(e){sw.textContent='⚠ 文案生成失敗，使用通用備用文案。';sw.classList.add('show');}
+
+  // Step 2: 生成 HTML
+  setStatus('⚙',true,'生成廣告版型…','Skills B × C × D 協同運算中',55);
+  let prog=55;const t=setInterval(()=>{prog=Math.min(prog+Math.random()*12,92);document.getElementById('pb').style.width=prog+'%';},200);
+
+  try{
+    const pay={...event,speakers:sel,n_total:n,copies};
+    const r2=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pay)});
+    clearInterval(t);document.getElementById('pb').style.width='100%';
+    if(!r2.ok){const e=await r2.json();throw new Error(e.error||'生成失敗');}
+    blob=await r2.blob();dn=`bebit_ads_${(event.event_name||'ads').slice(0,12)}.zip`;
+    setStatus('✓',false,'生成完成',`${n} 個廣告 HTML 已就緒，點擊下方下載`,100);
+    dl.classList.add('show');
+    dl.onclick=()=>{const u=URL.createObjectURL(blob);Object.assign(document.createElement('a'),{href:u,download:dn}).click();URL.revokeObjectURL(u);};
+  }catch(e){
+    clearInterval(t);
+    setStatus('✕',false,'生成失敗',e.message,0);
+  }finally{bg.disabled=false;}
+}
+load();
+</script>
+</body>
+</html>
