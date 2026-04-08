@@ -47,7 +47,7 @@ def generate_copies(event: dict, api_key: str) -> dict:
         }
     }).encode('utf-8')
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
     req = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"}, method="POST")
 
     with urllib.request.urlopen(req, timeout=30) as resp:
